@@ -5,6 +5,11 @@ class RegistrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Register')),
+    );
   }
+
+  static const name = 'register';
+  static const path = '/register';
 }

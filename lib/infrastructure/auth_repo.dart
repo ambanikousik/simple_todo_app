@@ -13,7 +13,7 @@ class AuthRepo extends IAuthRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = await api.post(
         fromData: (data) => UserData.fromMap(data),
-        endPoint: '/auth/login',
+        endPoint: '/auth/login/',
         body: body.toMap());
 
     return data.fold((l) => left(l), (r) {
@@ -35,7 +35,7 @@ class AuthRepo extends IAuthRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = await api.post(
         fromData: (data) => UserData.fromMap(data),
-        endPoint: '/auth/register',
+        endPoint: '/auth/register/',
         body: body.toMap());
 
     return data.fold((l) => left(l), (r) {
@@ -53,7 +53,7 @@ class AuthRepo extends IAuthRepo {
     if (token != null) {
       api.setHeader({"Authorization": "Bearer $token"});
       final data = await api.get(
-          fromData: (data) => UserData.fromMap(data), endPoint: '/auth/user');
+          fromData: (data) => UserData.fromMap(data), endPoint: '/auth/user/');
       return data.fold((l) => none(), (r) => some(r));
     } else {
       return none();

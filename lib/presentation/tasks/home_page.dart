@@ -41,4 +41,8 @@ class HomePage extends HookConsumerWidget {
       ),
     );
   }
+
+  static const name = "home";
+
+  static const path = "/";
 }
