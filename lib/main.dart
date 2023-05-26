@@ -1,9 +1,14 @@
+import 'package:clean_api/clean_api.dart';
 import 'package:flutter/material.dart';
-
-import 'presentation/tasks/home_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:simple_todo_app/presentation/auth/splash_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  CleanApi.instance.setup(
+      baseUrl: 'https://simpletodoserver-production.up.railway.app/api',
+      enableDialogue: true);
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,10 +19,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Simple Todo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow.shade800),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const SplashPage(),
     );
   }
 }

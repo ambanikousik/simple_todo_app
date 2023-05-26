@@ -7,5 +7,5 @@ abstract class IAuthRepo {
   Future<Option<UserData>> tryLogin();
   Future<Either<CleanFailure, UserData>> login(LoginBody body);
   Future<Either<CleanFailure, UserData>> registration(RegistrationBody body);
-  void logout();
+  Future<void> logout();
 }

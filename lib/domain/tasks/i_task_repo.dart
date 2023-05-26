@@ -7,5 +7,5 @@ abstract class ITaskRepo {
   Future<Option<CleanFailure>> createTask(CreateUpdateTaskBody body);
   Future<Option<CleanFailure>> updateTask(CreateUpdateTaskBody body);
   Future<Option<CleanFailure>> deleteTasks(int taskId);
-  Future<Either<CleanApi, IList<TaskData>>> getTasks();
+  Future<Either<CleanFailure, IList<TaskData>>> getTasks();
 }
