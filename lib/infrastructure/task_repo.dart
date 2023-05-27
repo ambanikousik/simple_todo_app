@@ -6,10 +6,13 @@ import 'package:simple_todo_app/domain/tasks/i_task_repo.dart';
 import 'package:simple_todo_app/domain/tasks/task_data.dart';
 
 class TaskRepo extends ITaskRepo {
+  final api = CleanApi.instance;
   @override
-  Future<Option<CleanFailure>> createTask(CreateUpdateTaskBody body) {
-    // TODO: implement createTask
-    throw UnimplementedError();
+  Future<Option<CleanFailure>> createTask(CreateUpdateTaskBody body) async {
+    final data = await api.post(
+        fromData: (data) => data, body: body.toMap(), endPoint: '/tasks/');
+
+    return data.fold((l) => some(l), (r) => none());
   }
 
   @override
@@ -19,14 +22,23 @@ class TaskRepo extends ITaskRepo {
   }
 
   @override
-  Future<Either<CleanFailure, IList<TaskData>>> getTasks() {
-    // TODO: implement getTasks
-    throw UnimplementedError();
+  Future<Either<CleanFailure, IList<TaskData>>> getTasks() async {
+    final data = await api.get(
+        fromData: (data) =>
+            List<TaskData>.from((data as List).map((e) => TaskData.fromMap(e)))
+                .lock,
+        endPoint: '/tasks/');
+    return data;
   }
 
   @override
-  Future<Option<CleanFailure>> updateTask(CreateUpdateTaskBody body) {
-    // TODO: implement updateTask
-    throw UnimplementedError();
+  Future<Option<CleanFailure>> updateTask(
+      CreateUpdateTaskBody body, int taskId) async {
+    final data = await api.put(
+        fromData: (data) => data,
+        body: body.toMap(),
+        endPoint: '/tasks/$taskId/');
+
+    return data.fold((l) => some(l), (r) => none());
   }
 }

@@ -12,8 +12,10 @@ class AuthRepo extends IAuthRepo {
   Future<Either<CleanFailure, UserData>> login(LoginBody body) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = await api.post(
-        fromData: (data) => UserData.fromMap(data),
+        fromData: (data) => UserData.fromMap(data['user']),
         endPoint: '/auth/login/',
+        failureHandler: (statusCode, responseBody) =>
+            left(CleanFailure(error: responseBody['detail'])),
         body: body.toMap());
 
     return data.fold((l) => left(l), (r) {
@@ -34,8 +36,10 @@ class AuthRepo extends IAuthRepo {
       RegistrationBody body) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = await api.post(
-        fromData: (data) => UserData.fromMap(data),
+        fromData: (data) => UserData.fromMap(data['user']),
         endPoint: '/auth/register/',
+        failureHandler: (statusCode, responseBody) =>
+            left(CleanFailure(error: responseBody['detail'])),
         body: body.toMap());
 
     return data.fold((l) => left(l), (r) {
@@ -50,7 +54,7 @@ class AuthRepo extends IAuthRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
 
-    if (token != null) {
+    if (token != null && token.isNotEmpty) {
       api.setHeader({"Authorization": "Bearer $token"});
       final data = await api.get(
           fromData: (data) => UserData.fromMap(data), endPoint: '/auth/user/');

@@ -1,4 +1,5 @@
 import 'package:clean_api/clean_api.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -22,10 +23,13 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'Simple Todo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      darkTheme: FlexThemeData.dark(
+          scheme: FlexScheme.gold,
+          blendLevel: 10,
+          useMaterial3: true,
+          subThemesData: const FlexSubThemesData(),
+          surfaceMode: FlexSurfaceMode.highScaffoldLowSurface),
+      themeMode: ThemeMode.dark,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,

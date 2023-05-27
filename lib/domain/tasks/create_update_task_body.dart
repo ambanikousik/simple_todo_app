@@ -32,7 +32,7 @@ class CreateUpdateTaskBody extends Equatable {
     return {
       'title': title,
       'description': description,
-      'deadline': deadline.toUtc().toIso8601String,
+      'deadline': deadline.toUtc().toIso8601String(),
       'is_completed': isCompleted,
     };
   }

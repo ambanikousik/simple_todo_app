@@ -8,6 +8,7 @@ import 'package:simple_todo_app/domain/auth/user_data.dart';
 import 'package:simple_todo_app/presentation/auth/login_page.dart';
 import 'package:simple_todo_app/presentation/auth/registration_page.dart';
 import 'package:simple_todo_app/presentation/routes/error_screen.dart';
+import 'package:simple_todo_app/presentation/tasks/create_task_page.dart';
 import 'package:simple_todo_app/presentation/tasks/home_page.dart';
 
 import 'loading_page.dart';
@@ -64,6 +65,13 @@ class RouterNotifier extends AutoDisposeAsyncNotifier<Option<UserData>>
           ),
         ),
         GoRoute(
+          path: CreateTaskPage.path,
+          name: CreateTaskPage.name,
+          builder: (context, state) => CreateTaskPage(
+            key: state.pageKey,
+          ),
+        ),
+        GoRoute(
           path: RouteErrorScreen.path,
           name: RouteErrorScreen.name,
           builder: (context, state) => RouteErrorScreen(
@@ -78,13 +86,14 @@ class RouterNotifier extends AutoDisposeAsyncNotifier<Option<UserData>>
 
     Logger.i("auth changed = $authState");
     final isGoingToLogin = state.matchedLocation == LoginPage.path ||
-        state.matchedLocation == RegistrationPage.path;
+        state.matchedLocation == RegistrationPage.path ||
+        state.matchedLocation == LoadingPage.path;
 
     return authState.when(
         data: (data) {
           return data.fold(() {
             return isGoingToLogin ? null : LoginPage.path;
-          }, (t) => HomePage.path);
+          }, (t) => isGoingToLogin ? HomePage.path : null);
         },
         error: (error, _) => RouteErrorScreen.path,
         loading: () => LoadingPage.path);

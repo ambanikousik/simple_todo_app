@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:simple_todo_app/application/auth_provider.dart';
 import 'package:simple_todo_app/domain/auth/login_body.dart';
 import 'package:simple_todo_app/presentation/auth/registration_page.dart';
+import 'package:simple_todo_app/presentation/core_widgets/gradient_scaffold.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
@@ -15,7 +17,8 @@ class LoginPage extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final showPassword = useState(false);
-    return Scaffold(
+    final loading = useState(false);
+    return GradientScaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
@@ -23,7 +26,7 @@ class LoginPage extends HookConsumerWidget {
         key: formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
+          child: ListView(
             children: [
               const SizedBox(
                 height: 60,
@@ -32,6 +35,7 @@ class LoginPage extends HookConsumerWidget {
                 controller: emailController,
                 style: const TextStyle(fontSize: 18),
                 decoration: const InputDecoration(
+                    fillColor: Colors.white24,
                     prefixIcon: Icon(CupertinoIcons.mail),
                     labelText: 'Email',
                     hintText: 'abc@email.com',
@@ -46,8 +50,9 @@ class LoginPage extends HookConsumerWidget {
               TextFormField(
                 controller: passwordController,
                 style: const TextStyle(fontSize: 18),
-                obscureText: showPassword.value,
+                obscureText: !showPassword.value,
                 decoration: InputDecoration(
+                    fillColor: Colors.white24,
                     prefixIcon: const Icon(CupertinoIcons.lock_circle),
                     suffix: InkWell(
                         onTap: () {
@@ -67,23 +72,37 @@ class LoginPage extends HookConsumerWidget {
                 height: 50,
               ),
               FilledButton.tonal(
-                  onPressed: () {
+                  onPressed: () async {
                     if (formKey.currentState?.validate() ?? false) {
                       final body = LoginBody(
                           email: emailController.text,
                           password: passwordController.text);
-                      ref.read(authProvider.notifier).login(body);
+                      loading.value = true;
+                      final result =
+                          await ref.read(authProvider.notifier).login(body);
+
+                      if (result.isSome()) {
+                        if (context.mounted) {
+                          loading.value = false;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text(result.fold(() => '', (t) => t.error))));
+                        }
+                      }
                     }
                   },
-                  child: const Text('Login')),
+                  child: loading.value
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Text('Login')),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Do not have any account?'),
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const RegistrationPage()));
+                        context.push(RegistrationPage.path);
                       },
                       child: const Text('Register'))
                 ],

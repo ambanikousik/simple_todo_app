@@ -5,7 +5,8 @@ import 'package:simple_todo_app/domain/tasks/task_data.dart';
 
 abstract class ITaskRepo {
   Future<Option<CleanFailure>> createTask(CreateUpdateTaskBody body);
-  Future<Option<CleanFailure>> updateTask(CreateUpdateTaskBody body);
+  Future<Option<CleanFailure>> updateTask(
+      CreateUpdateTaskBody body, int taskId);
   Future<Option<CleanFailure>> deleteTasks(int taskId);
   Future<Either<CleanFailure, IList<TaskData>>> getTasks();
 }
