@@ -86,14 +86,16 @@ class RouterNotifier extends AutoDisposeAsyncNotifier<Option<UserData>>
 
     Logger.i("auth changed = $authState");
     final isGoingToLogin = state.matchedLocation == LoginPage.path ||
-        state.matchedLocation == RegistrationPage.path ||
-        state.matchedLocation == LoadingPage.path;
+        state.matchedLocation == RegistrationPage.path;
 
     return authState.when(
         data: (data) {
           return data.fold(() {
             return isGoingToLogin ? null : LoginPage.path;
-          }, (t) => isGoingToLogin ? HomePage.path : null);
+          },
+              (t) => isGoingToLogin || state.matchedLocation == LoadingPage.path
+                  ? HomePage.path
+                  : null);
         },
         error: (error, _) => RouteErrorScreen.path,
         loading: () => LoadingPage.path);
