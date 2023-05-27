@@ -20,6 +20,9 @@ class AuthorWidget extends ConsumerWidget {
                   child: Row(
                     children: [
                       const Icon(CupertinoIcons.person_alt_circle),
+                      const SizedBox(
+                        width: 2,
+                      ),
                       Text('${t.firstName} ${t.lastName}'),
                     ],
                   ),

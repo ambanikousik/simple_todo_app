@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:simple_todo_app/application/auth_provider.dart';
 import 'package:simple_todo_app/domain/auth/registration_body.dart';
+import 'package:simple_todo_app/presentation/core_widgets/gradient_scaffold.dart';
 
 class RegistrationPage extends HookConsumerWidget {
   const RegistrationPage({super.key});
@@ -21,8 +22,9 @@ class RegistrationPage extends HookConsumerWidget {
     final showPassword = useState(false);
     final loading = useState(false);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+    return GradientScaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.transparent, title: const Text('Register')),
       body: Form(
         key: formKey,
         child: Padding(
@@ -35,11 +37,13 @@ class RegistrationPage extends HookConsumerWidget {
               TextFormField(
                 controller: firstName,
                 style: const TextStyle(fontSize: 18),
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(CupertinoIcons.person),
+                decoration: InputDecoration(
+                    fillColor: Colors.white24,
+                    errorStyle: TextStyle(color: Colors.amber.shade50),
+                    prefixIcon: const Icon(CupertinoIcons.person),
                     labelText: 'First name',
                     hintText: 'John',
-                    border: OutlineInputBorder()),
+                    border: const OutlineInputBorder()),
                 validator: (value) => value == null || value.isEmpty
                     ? 'First name is required'
                     : null,
@@ -50,11 +54,13 @@ class RegistrationPage extends HookConsumerWidget {
               TextFormField(
                 controller: lastName,
                 style: const TextStyle(fontSize: 18),
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(CupertinoIcons.person),
+                decoration: InputDecoration(
+                    fillColor: Colors.white24,
+                    errorStyle: TextStyle(color: Colors.amber.shade50),
+                    prefixIcon: const Icon(CupertinoIcons.person),
                     labelText: 'Last name',
                     hintText: 'Whick',
-                    border: OutlineInputBorder()),
+                    border: const OutlineInputBorder()),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Last name is required'
                     : null,
@@ -65,11 +71,13 @@ class RegistrationPage extends HookConsumerWidget {
               TextFormField(
                 controller: emailController,
                 style: const TextStyle(fontSize: 18),
-                decoration: const InputDecoration(
-                    prefixIcon: Icon(CupertinoIcons.mail),
+                decoration: InputDecoration(
+                    fillColor: Colors.white24,
+                    errorStyle: TextStyle(color: Colors.amber.shade50),
+                    prefixIcon: const Icon(CupertinoIcons.mail),
                     labelText: 'Email',
                     hintText: 'abc@email.com',
-                    border: OutlineInputBorder()),
+                    border: const OutlineInputBorder()),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Please write down email address'
                     : null,
@@ -82,6 +90,8 @@ class RegistrationPage extends HookConsumerWidget {
                 style: const TextStyle(fontSize: 18),
                 obscureText: !showPassword.value,
                 decoration: InputDecoration(
+                    fillColor: Colors.white24,
+                    errorStyle: TextStyle(color: Colors.amber.shade50),
                     prefixIcon: const Icon(CupertinoIcons.lock_circle),
                     suffix: InkWell(
                         onTap: () {
@@ -105,6 +115,8 @@ class RegistrationPage extends HookConsumerWidget {
                 style: const TextStyle(fontSize: 18),
                 obscureText: !showPassword.value,
                 decoration: InputDecoration(
+                    fillColor: Colors.white24,
+                    errorStyle: TextStyle(color: Colors.amber.shade50),
                     prefixIcon: const Icon(CupertinoIcons.lock_circle),
                     suffix: InkWell(
                         onTap: () {
@@ -125,7 +137,10 @@ class RegistrationPage extends HookConsumerWidget {
               const SizedBox(
                 height: 50,
               ),
-              FilledButton.tonal(
+              FilledButton(
+                  style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white30,
+                      foregroundColor: Colors.white),
                   onPressed: () async {
                     if (formKey.currentState?.validate() ?? false) {
                       final body = RegistrationBody(

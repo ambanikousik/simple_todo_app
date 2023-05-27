@@ -123,15 +123,25 @@ class TaskTile extends HookConsumerWidget {
                                 icon: const Icon(Icons.edit_document),
                                 label: const Text('Edit'),
                               ),
-                              TextButton(
+                              TextButton.icon(
                                 onPressed: () {
-                                  context.pop(true);
+                                  ref
+                                      .read(taskListProvider.notifier)
+                                      .deleteTask(task.id);
+                                  context.pop(false);
                                 },
-                                child: task.isCompleted
-                                    ? const Text("Mark as\nIncomplete")
-                                    : const Text("Mark as\nComplete"),
+                                icon: const Icon(CupertinoIcons.delete_simple),
+                                label: const Text("Delete"),
                               )
                             ],
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              context.pop(true);
+                            },
+                            child: task.isCompleted
+                                ? const Text("Mark as Incomplete")
+                                : const Text("Mark as Complete"),
                           )
                         ],
                       ),

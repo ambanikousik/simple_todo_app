@@ -56,4 +56,17 @@ class TaskListNotifier extends AsyncNotifier<IList<TaskData>> {
       });
     }, (t) => some(t));
   }
+
+  Future<Option<CleanFailure>> deleteTask(
+    int taskId,
+  ) async {
+    await ref.read(taskRepoProvider).deleteTasks(
+          taskId,
+        );
+    final dt = await loadTaskList();
+    return dt.fold((l) => some(l), (r) {
+      state = AsyncData(r);
+      return none();
+    });
+  }
 }

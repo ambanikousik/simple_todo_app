@@ -115,7 +115,7 @@ class CreateTaskPage extends HookConsumerWidget {
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : const Text('Create post')),
+                      : const Text('Create task')),
             )
           ],
         ),

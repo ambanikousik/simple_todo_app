@@ -16,9 +16,11 @@ class TaskRepo extends ITaskRepo {
   }
 
   @override
-  Future<Option<CleanFailure>> deleteTasks(int taskId) {
-    // TODO: implement deleteTasks
-    throw UnimplementedError();
+  Future<Option<CleanFailure>> deleteTasks(int taskId) async {
+    final data =
+        await api.delete(fromData: (data) => data, endPoint: '/tasks/$taskId/');
+
+    return data.fold((l) => some(l), (r) => none());
   }
 
   @override
@@ -35,7 +37,7 @@ class TaskRepo extends ITaskRepo {
   Future<Option<CleanFailure>> updateTask(
       CreateUpdateTaskBody body, int taskId) async {
     final data = await api.put(
-        fromData: (data) => data,
+        fromData: (data) => null,
         body: body.toMap(),
         endPoint: '/tasks/$taskId/');
 

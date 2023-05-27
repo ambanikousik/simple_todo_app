@@ -20,6 +20,7 @@ class LoginPage extends HookConsumerWidget {
     final loading = useState(false);
     return GradientScaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text('Login'),
       ),
       body: Form(
@@ -34,12 +35,13 @@ class LoginPage extends HookConsumerWidget {
               TextFormField(
                 controller: emailController,
                 style: const TextStyle(fontSize: 18),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     fillColor: Colors.white24,
-                    prefixIcon: Icon(CupertinoIcons.mail),
+                    errorStyle: TextStyle(color: Colors.amber.shade50),
+                    prefixIcon: const Icon(CupertinoIcons.mail),
                     labelText: 'Email',
                     hintText: 'abc@email.com',
-                    border: OutlineInputBorder()),
+                    border: const OutlineInputBorder()),
                 validator: (value) => value == null || value.isEmpty
                     ? 'Please write down email address'
                     : null,
@@ -53,6 +55,7 @@ class LoginPage extends HookConsumerWidget {
                 obscureText: !showPassword.value,
                 decoration: InputDecoration(
                     fillColor: Colors.white24,
+                    errorStyle: TextStyle(color: Colors.amber.shade50),
                     prefixIcon: const Icon(CupertinoIcons.lock_circle),
                     suffix: InkWell(
                         onTap: () {
@@ -71,7 +74,10 @@ class LoginPage extends HookConsumerWidget {
               const SizedBox(
                 height: 50,
               ),
-              FilledButton.tonal(
+              FilledButton(
+                  style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white30,
+                      foregroundColor: Colors.white),
                   onPressed: () async {
                     if (formKey.currentState?.validate() ?? false) {
                       final body = LoginBody(

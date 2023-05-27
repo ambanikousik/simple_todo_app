@@ -23,6 +23,7 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'Simple Todo',
+      debugShowCheckedModeBanner: false,
       darkTheme: FlexThemeData.dark(
           scheme: FlexScheme.gold,
           blendLevel: 10,
